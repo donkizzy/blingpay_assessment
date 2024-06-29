@@ -1,11 +1,17 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:blingpay_assesment/app_colors.dart';
 import 'package:blingpay_assesment/features/users/presentation/pages/home.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+  );
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   runApp(MyApp(savedThemeMode: savedThemeMode));
 }
