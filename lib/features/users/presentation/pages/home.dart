@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:blingpay_assesment/app_colors.dart';
+import 'package:blingpay_assesment/features/post/presentation/widgets/posts_list.dart';
 import 'package:blingpay_assesment/features/users/presentation/widgets/users_list.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
               child: TabBarView(
                 children: [
                   UsersList(),
-                  UsersList(),
+                  PostsList(),
                 ],
               ),
             ),

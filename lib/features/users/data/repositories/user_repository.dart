@@ -11,10 +11,4 @@ class UserRepository {
     final users = ref.docs.map((doc) => UserModel.fromSnapshot(doc)).toList();
     return users;
   }
-
-  Future<List<UserModel>> fetchPosts() async {
-    final ref =  await  firebaseFireStore.collection("post").get();
-    final users = ref.docs.map((doc) => UserModel.fromSnapshot(doc)).toList();
-    return users;
-  }
 }
