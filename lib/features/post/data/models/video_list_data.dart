@@ -1,7 +1,9 @@
+import 'package:blingpay_assesment/features/post/data/models/post_model.dart';
+
 class VideoListData {
-  final String videoUrl;
+  final PostModel post;
   Duration? lastPosition;
   bool? wasPlaying = false;
 
-  VideoListData(this.videoUrl);
+  VideoListData(this.post);
 }

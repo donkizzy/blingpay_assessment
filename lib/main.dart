@@ -6,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseFirestore.instance.settings = const Settings(
@@ -17,7 +17,6 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-
   final AdaptiveThemeMode? savedThemeMode;
 
   const MyApp({super.key, this.savedThemeMode});
@@ -25,19 +24,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveTheme(
-      initial: savedThemeMode ?? AdaptiveThemeMode.system,
+      initial: savedThemeMode ?? AdaptiveThemeMode.dark,
       light: ThemeData(
-        // This is the light theme of the application.
+          // This is the light theme of the application.
           colorScheme: ColorScheme.fromSeed(
-              seedColor: veryDarkBlue, onSurface: Colors.white,),
+            seedColor: veryDarkBlue,
+            onSurface: Colors.white,
+            outline: mysticWhite
+          ),
           useMaterial3: true,
-          textTheme: GoogleFonts.rubikTextTheme()),
+          textTheme: GoogleFonts.rubikTextTheme().copyWith(
+            bodyMedium: const TextStyle(
+              color: codGray,
+            ),
+          )),
       dark: ThemeData(
-        // This is the dark theme of the application.
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: veryDarkBlue, onSurface: veryDarkBlue),
+          // This is the dark theme of the application.
+          colorScheme: ColorScheme.fromSeed(seedColor: veryDarkBlue, onSurface: codGray,outline: mineShaftGrey),
           useMaterial3: true,
-          textTheme: GoogleFonts.rubikTextTheme()),
+          textTheme: GoogleFonts.rubikTextTheme().copyWith(
+            bodyMedium: const TextStyle(
+              color: Colors.white,
+            ),
+          )),
       builder: (ThemeData light, ThemeData dark) {
         return MaterialApp(
           title: 'Bling Social',
@@ -49,4 +58,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
