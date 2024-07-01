@@ -26,9 +26,9 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               AdaptiveTheme.of(context).toggleThemeMode();
             },
-            child: const Text(
+            child:  Text(
               'Toggle Theme',
-              style: TextStyle(color: violetDashboard, ),
+              style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color, fontWeight: FontWeight.w800),
             ),
           ),
           const SizedBox(width: 20,)
@@ -39,29 +39,29 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: <Widget>[
             ButtonsTabBar(
-              backgroundColor: violetDashboard,
+              backgroundColor: shakeSpearBlue,
               labelStyle: const TextStyle(fontWeight: FontWeight.w700,color: Colors.white,fontSize: 16),
-              unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600,color: Colors.white),
-              unselectedBackgroundColor: paleBlue,
+              unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w600,color: Theme.of(context).textTheme.bodyMedium!.color),
+              unselectedBackgroundColor: const Color(0xff666666).withOpacity(0.5),
               radius: 100,
-              buttonMargin: const EdgeInsets.only(right: 20),
+              buttonMargin: const EdgeInsets.only(right: 20,bottom: 20),
               contentCenter: true,
               width: 120,
-              height: 45,
+              height: 65,
               tabs:const [
                 Tab(
-                  text: 'Users',
+                  text: 'Post',
                 ),
                 Tab(
-                  text: 'Post',
+                  text: 'Users',
                 ),
               ],
             ),
             const Expanded(
               child: TabBarView(
                 children: [
-                  UsersList(),
                   PostsList(),
+                  UsersList(),
                 ],
               ),
             ),
