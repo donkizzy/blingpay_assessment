@@ -22,12 +22,4 @@ class UserModel {
     photo: snapshot.get("photo"),
     bio: snapshot.get("bio"),
   );
-
-  Map<String, dynamic> toJson() => {
-    "userId": userId,
-    "username": username,
-    "name": name,
-    "photo": photo,
-    "bio": bio,
-  };
 }

@@ -28,15 +28,12 @@ void main() {
       }
     ];
 
-    // Add data to fake Firestore collection
     for (var doc in mockDocs) {
       await firebaseFireStore.collection('users').add(doc);
     }
 
-    // Call the method
     final users = await userRepository.fetchUsers();
 
-    // Assert the result (similar to previous test)
     expect(users.length, mockDocs.length);
     expect(users.first.name, mockDocs[0]['name']);
     expect(users.first.username, mockDocs[0]['username']);

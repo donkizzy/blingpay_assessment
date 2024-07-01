@@ -9,8 +9,8 @@ part 'user_state.dart';
 class UserCubit extends Cubit<UserState> {
   late final UserRepository _appRepository;
 
-  UserCubit({UserRepository? appRepository}) : super(UserInitial()) {
-    _appRepository = appRepository ?? UserRepository(firebaseFireStore: FirebaseFirestore.instance);
+  UserCubit({UserRepository? userRepository}) : super(UserInitial()) {
+    _appRepository = userRepository ?? UserRepository(firebaseFireStore: FirebaseFirestore.instance);
   }
 
   void fetchUsers() async {

@@ -34,16 +34,4 @@ class PostModel {
     timestamp: snapshot.get("timestamp"),
     video: (snapshot.data() as Map<String,dynamic>).containsKey('video') ? bool.parse(snapshot.get("video").toString()) : null,
   );
-
-  Map<String, dynamic> toJson() => {
-    "thumbnail": thumbnail,
-    "userId": userId,
-    "id": id,
-    "no_media": noMedia,
-    "link": link,
-    "username": username,
-    "description": description,
-    "timestamp": timestamp,
-    "video": video,
-  };
 }
