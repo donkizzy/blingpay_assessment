@@ -19,54 +19,72 @@ class PostItem extends StatefulWidget {
 }
 
 class _PostItemState extends State<PostItem> {
-
-
+  late String postDate ;
   @override
   void initState() {
+    postDate = DateTime.fromMillisecondsSinceEpoch(widget.postModel.timestamp ?? -1).toString().substring(0,10);
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
       children: [
-        CachedNetworkImage(
-          imageUrl: widget.postModel.thumbnail ?? '',
-          imageBuilder: (context, imageProvider) => Container(
-            height: 25,
-            width: 25,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(
-            value: downloadProgress.progress,
-            strokeWidth: 2,
-          ),
-          errorWidget: (context, url, error) => Container(
-              height: 25,
-              width: 25,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: paleBlue.withOpacity(0.3)),
-              child: const Icon(Icons.error)),
-        ),
-        const SizedBox(
-          width: 20,
-        ),
-        Expanded(
-            child: Column(
+         Divider(color: paleBlue.withOpacity(0.6),height: 0.5,),
+        const SizedBox(height: 10,),
+        Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.postModel.username ?? 'N/A',style: const TextStyle(fontSize: 16),),
-            const SizedBox(height: 10,),
-            post(widget.postModel)
+            CachedNetworkImage(
+              imageUrl: widget.postModel.thumbnail ?? '',
+              imageBuilder: (context, imageProvider) => Container(
+                height: 35,
+                width: 35,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(
+                value: downloadProgress.progress,
+                strokeWidth: 2,
+              ),
+              errorWidget: (context, url, error) => Container(
+                  height: 25,
+                  width: 25,
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: paleBlue.withOpacity(0.3)),
+                  child: const Icon(Icons.error)),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      widget.postModel.username ?? 'N/A',
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(width: 10,),
+                    Text(postDate,
+                      style:  TextStyle(fontSize: 10, fontWeight: FontWeight.w700,color: Colors.grey.withOpacity(0.6)),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                post(widget.postModel)
+              ],
+            ))
           ],
-        ))
+        ),
       ],
     );
   }
@@ -87,18 +105,20 @@ class _PostItemState extends State<PostItem> {
     switch (getPostType(post)) {
       case PostType.video:
         return ReusableVideoListWidget(
-         canBuildVideo: widget.canBuildVideo,
-         videoListController: widget.videoListController,
-         videoListData: VideoListData(widget.postModel.link ?? ''),
+          canBuildVideo: widget.canBuildVideo,
+          videoListController: widget.videoListController,
+          videoListData: VideoListData(widget.postModel),
         );
       case PostType.image:
-        return PostImage(imageUrl: post.link ?? '',);
+        return PostImage(post: widget.postModel,
+        );
       default:
-        return Text(post.description ?? '');
+        return Text(
+          post.description ?? '',
+          style: const TextStyle(fontSize: 13),
+        );
     }
   }
-
-
 }
 
 enum PostType { video, image, text }

@@ -46,13 +46,14 @@ class ReusableVideoListWidgetState extends State<ReusableVideoListWidget> {
       controller = widget.videoListController!.getBetterPlayerController();
       if (controller != null) {
         controller!.setupDataSource(BetterPlayerDataSource.network(
-            videoListData!.videoUrl,
+            videoListData!.post.link ?? '',
             cacheConfiguration:
             const BetterPlayerCacheConfiguration(useCache: true)));
         if (!betterPlayerControllerStreamController.isClosed) {
           betterPlayerControllerStreamController.add(controller);
         }
         controller!.addEventsListener(onPlayerEvent);
+        controller?.play();
       }
     }
   }
@@ -88,55 +89,64 @@ class ReusableVideoListWidgetState extends State<ReusableVideoListWidget> {
     }
   }
 
-  ///TODO: Handle "setState() or markNeedsBuild() called during build." error
-  ///when fast scrolling through the list
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-      child: VisibilityDetector(
-        key: Key(hashCode.toString() + DateTime.now().toString()),
-        onVisibilityChanged: (info) {
-          if (!widget.canBuildVideo!()) {
-            _timer?.cancel();
-            _timer = null;
-            _timer = Timer(const Duration(milliseconds: 500), () {
-              if (info.visibleFraction >= 0.6) {
-                _setupController();
-              } else {
-                _freeController();
-              }
-            });
-            return;
-          }
-          if (info.visibleFraction >= 0.6) {
-            _setupController();
-          } else {
-            _freeController();
-          }
-        },
-        child: StreamBuilder<BetterPlayerController?>(
-          stream: betterPlayerControllerStreamController.stream,
-          builder: (context, snapshot) {
-            return AspectRatio(
-              aspectRatio: 16 / 9,
-              child: controller != null
-                  ? BetterPlayer(
-                controller: controller!,
-              )
-                  : Container(
-                color: Colors.black,
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    valueColor:
-                    AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                ),
-              ),
-            );
-          },
+    return Column(
+      children: [
+        Text(
+          widget.videoListData?.post.description ?? '',
+          style: const TextStyle(fontSize: 13),
         ),
-      ),
+        const SizedBox(
+          height: 10,
+        ),
+        VisibilityDetector(
+          key: Key(hashCode.toString() + DateTime.now().toString()),
+          onVisibilityChanged: (info) {
+            if (!widget.canBuildVideo!()) {
+              _timer?.cancel();
+              _timer = null;
+              _timer = Timer(const Duration(milliseconds: 500), () {
+                if (info.visibleFraction >= 0.6) {
+                  _setupController();
+                } else {
+                  _freeController();
+                }
+              });
+              return;
+            }
+            if (info.visibleFraction >= 0.6) {
+              _setupController();
+            } else {
+              _freeController();
+            }
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: StreamBuilder<BetterPlayerController?>(
+              stream: betterPlayerControllerStreamController.stream,
+              builder: (context, snapshot) {
+                return AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: controller != null
+                      ? BetterPlayer(
+                    controller: controller!,
+                  )
+                      : Container(
+                    color: Colors.black,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 
