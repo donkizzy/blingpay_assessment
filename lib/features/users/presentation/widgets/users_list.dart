@@ -47,7 +47,7 @@ class _UsersListState extends State<UsersList> with AutomaticKeepAliveClientMixi
                       width:50,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: violetSocial
+                        color: shakeSpearBlue
                       ),
                     ),),
                     const SizedBox(
@@ -61,19 +61,19 @@ class _UsersListState extends State<UsersList> with AutomaticKeepAliveClientMixi
                               children: [
                                 Shimmer.fromColors(
                                     baseColor: Colors.grey.withOpacity(0.2),
-                                    highlightColor: veryDarkBlue.withOpacity(0.1),child: Container(height: 20,width: 120,color: violetSocial,)),
+                                    highlightColor: veryDarkBlue.withOpacity(0.1),child: Container(height: 20,width: 120,color: shakeSpearBlue,)),
                                 const SizedBox(
                                   width: 5,
                                 ),
                                 Shimmer.fromColors(
                                     baseColor: Colors.grey.withOpacity(0.2),
-                                    highlightColor: veryDarkBlue.withOpacity(0.1),child: Container(height: 20,width: 120,color: violetSocial,)),
+                                    highlightColor: veryDarkBlue.withOpacity(0.1),child: Container(height: 20,width: 120,color: shakeSpearBlue,)),
                               ],
                             ),
                             const SizedBox(height: 20,),
                             Shimmer.fromColors(
                                 baseColor: Colors.grey.withOpacity(0.2),
-                                highlightColor: veryDarkBlue.withOpacity(0.1),child: Container(height: 30,color: violetSocial,)),
+                                highlightColor: veryDarkBlue.withOpacity(0.1),child: Container(height: 30,color: shakeSpearBlue,)),
                           ],
                         ))
                   ],
@@ -96,61 +96,67 @@ class _UsersListState extends State<UsersList> with AutomaticKeepAliveClientMixi
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {},
-                child: Row(
+                child: Column(
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: state.users[index].photo ?? '',
-                      imageBuilder: (context, imageProvider) =>
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
+                    Divider(color: Theme.of(context).colorScheme.outline,height: 0.3,),
+                    const SizedBox(height: 10,),
+                    Row(
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl: state.users[index].photo ?? '',
+                          imageBuilder: (context, imageProvider) =>
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                          CircularProgressIndicator(
-                            value: downloadProgress.progress,
-                            strokeWidth: 2,
-                          ),
-                      errorWidget: (context, url, error) => Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: paleBlue.withOpacity(0.3)
-                          ),
-                          child: const Icon(Icons.error)),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                     Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              CircularProgressIndicator(
+                                value: downloadProgress.progress,
+                                strokeWidth: 2,
+                              ),
+                          errorWidget: (context, url, error) => Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: paleBlue.withOpacity(0.3)
+                              ),
+                              child: const Icon(Icons.error)),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                         Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      state.users[index].name ?? 'N/A',
+                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text('@${state.users[index].username ?? 'N/A'}'),
+                                  ],
+                                ),
                                 Text(
-                                  state.users[index].name ?? 'N/A',
-                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                                  state.users[index].bio ?? '',
+                                  style: const TextStyle(fontWeight: FontWeight.w500),
                                 ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text('@${state.users[index].username ?? 'N/A'}'),
                               ],
-                            ),
-                            Text(
-                              state.users[index].bio ?? '',
-                              style: const TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ))
+                            ))
+                      ],
+                    ),
                   ],
                 ),
               );
@@ -168,7 +174,9 @@ class _UsersListState extends State<UsersList> with AutomaticKeepAliveClientMixi
             children: [
               Text(state.error),
               const SizedBox(height: 20,),
-              MaterialButton(onPressed: (){},child: const Text('Retry'),)
+              MaterialButton(onPressed: (){
+                userCubit.fetchUsers();
+              },child: const Text('Retry'),)
             ],
           );
         }
