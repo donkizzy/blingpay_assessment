@@ -4,15 +4,15 @@ A new Flutter project.
 
 ## Getting Started
 
-###Flutter Project: Bling Social
+### Flutter Project: Bling Social
 This README outlines the approach taken for developing the Bling Social app, It details the project's functionalities, architecture, testing strategies, and known limitations.
 
 
-####Project Description:
+#### Project Description:
 The purpose of this project was to fetch a list of users and their posts and display it to the users in a friendly and appealing manner
 
 
-####Tech Stack:
+### Tech Stack:
 
 Flutter version:  **3.22.2**
 
@@ -33,7 +33,7 @@ Dependencies:
 - [mockito](https://pub.dev/packages/mockito) : Mock library for Dart that allows generating of Mock Implementation of classes for testing 
 - [fake_cloud_firestore](https://pub.dev/packages/fake_cloud_firestore) : Fake Cloud Firestore helps with creating a cMocked Instance of Cloud Firestore for easy testing
 
-###Project Architecture:
+### Project Architecture:
 
 This project uses a feature first folder strcuture and BLOC for its architecture
 ![](https://bloclibrary.dev/_astro/bloc_architecture_full.CYn-T9Ox_Z20Hwr9.webp)
@@ -48,7 +48,7 @@ Using the BLOC architecture allows us to separate our application into three lay
 
 - Repository : This layer is the lowest level of the application and interacts with databases, network requests, and other asynchronous data sources.
 
-###Testing
+### Testing
 
 This project prioritizes code quality and maintainability through a test-driven approach.
 
@@ -56,10 +56,10 @@ We utilize the flutter_test package bundled with the flutter for testing the rep
 
 This project also has 100% test coverage
 
-###Known Limitations
+### Known Limitations
 The video player doesn't work on the simulator but works great on a physical device
 
-###Getting Started:
+### Getting Started:
 
 - Clone the repository:
 
