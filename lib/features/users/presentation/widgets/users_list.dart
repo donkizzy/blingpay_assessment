@@ -1,9 +1,10 @@
 import 'package:blingpay_assesment/app_colors.dart';
 import 'package:blingpay_assesment/features/users/data/bloc/user_cubit.dart';
+import 'package:blingpay_assesment/features/users/presentation/widgets/error_widget.dart';
+import 'package:blingpay_assesment/features/users/presentation/widgets/users_loader.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
 
 class UsersList extends StatefulWidget {
   const UsersList({super.key});
@@ -28,64 +29,7 @@ class _UsersListState extends State<UsersList> with AutomaticKeepAliveClientMixi
       bloc: userCubit,
       builder: (context, state) {
         if(state is FetchUsersLoading){
-          return ListView.separated(
-            shrinkWrap: true,
-            itemCount: 20,
-            physics: const ClampingScrollPhysics(),
-            padding: const EdgeInsets.all(20),
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                onTap: () {},
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Shimmer.fromColors(
-                      baseColor: Colors.grey.withOpacity(0.2),
-                      highlightColor: veryDarkBlue.withOpacity(0.1),
-                    child: Container(
-                      height: 50,
-                      width:50,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: shakeSpearBlue
-                      ),
-                    ),),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Shimmer.fromColors(
-                                    baseColor: Colors.grey.withOpacity(0.2),
-                                    highlightColor: veryDarkBlue.withOpacity(0.1),child: Container(height: 20,width: 120,color: shakeSpearBlue,)),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Shimmer.fromColors(
-                                    baseColor: Colors.grey.withOpacity(0.2),
-                                    highlightColor: veryDarkBlue.withOpacity(0.1),child: Container(height: 20,width: 120,color: shakeSpearBlue,)),
-                              ],
-                            ),
-                            const SizedBox(height: 20,),
-                            Shimmer.fromColors(
-                                baseColor: Colors.grey.withOpacity(0.2),
-                                highlightColor: veryDarkBlue.withOpacity(0.1),child: Container(height: 30,color: shakeSpearBlue,)),
-                          ],
-                        ))
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(
-                height: 20,
-              );
-            },
-          );
+          return const UsersLoader();
         }
         if(state is FetchUsersSuccess){
           return ListView.separated(
@@ -169,16 +113,9 @@ class _UsersListState extends State<UsersList> with AutomaticKeepAliveClientMixi
           );
         }
         if(state is FetchUsersError){
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(state.error),
-              const SizedBox(height: 20,),
-              MaterialButton(onPressed: (){
-                userCubit.fetchUsers();
-              },child: const Text('Retry'),)
-            ],
-          );
+          return ErrorViewWidget(error:state.error,onPressed: (){
+            userCubit.fetchUsers();
+          },);
         }
        return const SizedBox.shrink();
       },

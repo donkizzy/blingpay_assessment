@@ -1,7 +1,8 @@
-import 'package:blingpay_assesment/app_colors.dart';
 import 'package:blingpay_assesment/features/post/data/bloc/posts_cubit.dart';
 import 'package:blingpay_assesment/features/post/presentation/widgets/post_item.dart';
+import 'package:blingpay_assesment/features/post/presentation/widgets/post_loader.dart';
 import 'package:blingpay_assesment/features/post/presentation/widgets/reuseable_video_controller.dart';
+import 'package:blingpay_assesment/features/users/presentation/widgets/error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,10 +34,10 @@ class _PostsListState extends State<PostsList> with AutomaticKeepAliveClientMixi
     return BlocBuilder<PostsCubit, PostsState>(
       bloc: postsCubit,
       builder: (context, state) {
-        if(state is FetchPostsLoading){
-          return const Center(child: CircularProgressIndicator(color: shakeSpearBlue,strokeWidth: 2,),);
+        if (state is FetchPostsLoading) {
+          return const PostLoader();
         }
-        if(state is FetchPostsSuccess){
+        if (state is FetchPostsSuccess) {
           return NotificationListener<ScrollNotification>(
             onNotification: (notification) {
               final now = DateTime.now();
@@ -65,8 +66,8 @@ class _PostsListState extends State<PostsList> with AutomaticKeepAliveClientMixi
                 padding: const EdgeInsets.all(20),
                 itemBuilder: (BuildContext context, int index) {
                   return PostItem(
-                    postModel:state.postModels[index] ,
-                    canBuildVideo:  _checkCanBuildVideo,
+                    postModel: state.postModels[index],
+                    canBuildVideo: _checkCanBuildVideo,
                     videoListController: videoListController,
                   );
                 },
@@ -74,23 +75,15 @@ class _PostsListState extends State<PostsList> with AutomaticKeepAliveClientMixi
                   return const SizedBox(
                     height: 20,
                   );
-                }
-            ),
+                }),
           );
         }
-        if(state is FetchPostError){
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(state.error,textAlign: TextAlign.center,),
-              const SizedBox(height: 20,),
-              MaterialButton(
-                color: shakeSpearBlue,
-                elevation: 0.0,
-                onPressed: (){
-                postsCubit.fetchPosts();
-              },child: const Text('Retry',style: TextStyle(color: Colors.white),),)
-            ],
+        if (state is FetchPostError) {
+          return ErrorViewWidget(
+            error: state.error,
+            onPressed: () {
+              postsCubit.fetchPosts();
+            },
           );
         }
 
