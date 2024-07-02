@@ -13,13 +13,20 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   Platform.isIOS
-      ? await Firebase.initializeApp()
+      ? await Firebase.initializeApp(
+          options: FirebaseOptions(
+              apiKey: dotenv.env['IOS_API_KEY']!,
+              appId: dotenv.env['IOS_APP_ID']!,
+              messagingSenderId: dotenv.env['IOS_MESSENGER_SENDER_ID']!,
+              projectId: dotenv.env['PROJECT_ID']!,
+              iosBundleId: 'io.blinqpay.blinqpost',storageBucket: dotenv.env['IOS_STORAGE_BUCKET']!,))
       : await Firebase.initializeApp(
-          options:  FirebaseOptions(
+          options: FirebaseOptions(
               apiKey: dotenv.env['ANDROID_FIREBASE_API_KEY']!,
               appId: dotenv.env['ANDROID_APP_ID']!,
               messagingSenderId: dotenv.env['ANDROID_MESSEGNGER_SENDER_ID']!,
               projectId: dotenv.env['PROJECT_ID']!));
+
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
   );
