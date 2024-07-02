@@ -3,7 +3,7 @@ import 'package:blingpay_assesment/features/post/data/models/post_model.dart';
 import 'package:blingpay_assesment/features/post/data/models/video_list_data.dart';
 import 'package:blingpay_assesment/features/post/presentation/widgets/post_image.dart';
 import 'package:blingpay_assesment/features/post/presentation/widgets/reuseable_video_controller.dart';
-import 'package:blingpay_assesment/features/post/presentation/widgets/reuseable_video_list_widget.dart';
+import 'package:blingpay_assesment/features/post/presentation/widgets/post_video.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -66,6 +66,7 @@ class _PostItemState extends State<PostItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       widget.postModel.username ?? 'N/A',
@@ -79,6 +80,13 @@ class _PostItemState extends State<PostItem> {
                 ),
                 const SizedBox(
                   height: 5,
+                ),
+                Text(
+                  widget.postModel.description ?? '',
+                  style: const TextStyle(fontSize: 13),
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 post(widget.postModel)
               ],
@@ -104,7 +112,7 @@ class _PostItemState extends State<PostItem> {
   Widget post(PostModel post) {
     switch (getPostType(post)) {
       case PostType.video:
-        return ReusableVideoListWidget(
+        return PostVideo(
           canBuildVideo: widget.canBuildVideo,
           videoListController: widget.videoListController,
           videoListData: VideoListData(widget.postModel),
@@ -113,10 +121,7 @@ class _PostItemState extends State<PostItem> {
         return PostImage(post: widget.postModel,
         );
       default:
-        return Text(
-          post.description ?? '',
-          style: const TextStyle(fontSize: 13),
-        );
+        return const SizedBox.shrink();
     }
   }
 }

@@ -34,7 +34,7 @@ class _PostsListState extends State<PostsList> with AutomaticKeepAliveClientMixi
       bloc: postsCubit,
       builder: (context, state) {
         if(state is FetchPostsLoading){
-          return const Center(child: CircularProgressIndicator(color: violetSocial,strokeWidth: 2,),);
+          return const Center(child: CircularProgressIndicator(color: shakeSpearBlue,strokeWidth: 2,),);
         }
         if(state is FetchPostsSuccess){
           return NotificationListener<ScrollNotification>(
@@ -85,7 +85,7 @@ class _PostsListState extends State<PostsList> with AutomaticKeepAliveClientMixi
               Text(state.error,textAlign: TextAlign.center,),
               const SizedBox(height: 20,),
               MaterialButton(
-                color: violetSocial,
+                color: shakeSpearBlue,
                 elevation: 0.0,
                 onPressed: (){
                 postsCubit.fetchPosts();

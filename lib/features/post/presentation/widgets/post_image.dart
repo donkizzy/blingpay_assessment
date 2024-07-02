@@ -15,43 +15,33 @@ class PostImage extends StatelessWidget {
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => PhotosDetail(post: post,)));
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            post.description ?? '',
-            style: const TextStyle(fontSize: 13),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Hero(
-            tag: post.id ?? '6282',
-            child: CachedNetworkImage(
-              imageUrl: post.link ?? '',
-              imageBuilder: (context, imageProvider) => Container(
-                height: 200,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+      child: Hero(
+        tag: post.id ?? '6282',
+        child: CachedNetworkImage(
+          imageUrl: post.link ?? '',
+          imageBuilder: (context, imageProvider) => Container(
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
               ),
-              progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(
-                value: downloadProgress.progress,
-                strokeWidth: 2,
-              ),
-              errorWidget: (context, url, error) => Container(
-                  height: 25,
-                  width: 25,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: paleBlue.withOpacity(0.3)),
-                  child: const Icon(Icons.error)),
             ),
           ),
-        ],
+          progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+            child: CircularProgressIndicator(
+              value: downloadProgress.progress,
+              strokeWidth: 2,
+            ),
+          ),
+          errorWidget: (context, url, error) => Container(
+              height: 25,
+              width: 25,
+              decoration: BoxDecoration(shape: BoxShape.circle, color: paleBlue.withOpacity(0.3)),
+              child: const Icon(Icons.error)),
+        ),
       ),
     );
   }
